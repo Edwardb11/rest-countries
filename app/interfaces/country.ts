@@ -11,6 +11,15 @@ export interface countryData {
   capital: string;
 }
 
+export interface CountryCardProps {
+  flagSrc: string;
+  countryName: string;
+  population: number;
+  region: string;
+  capital: string;
+}
+
+
 export interface CountryProps {
   name: {
     common: string;

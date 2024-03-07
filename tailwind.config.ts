@@ -17,9 +17,12 @@ const config: Config = {
       white_DarkModeText_LightModeElements: "hsl(0, 0%, 100%)",
     },
     screens: {
-      mobile: "376px",
-      desktop: "1440px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
     },
+
     extend: {
       boxShadow: {
         full: "0 0 4px 2px rgba(0, 0, 0, 0.08)",

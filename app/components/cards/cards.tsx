@@ -1,14 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
-
-interface CountryCardProps {
-  flagSrc: string;
-  countryName: string;
-  population: number;
-  region: string;
-  capital: string;
-}
+import { CountryCardProps } from "@/app/interfaces/country";
 
 const Card = (countryProps: CountryCardProps) => {
   return (
@@ -23,7 +16,8 @@ const Card = (countryProps: CountryCardProps) => {
             width: "320px",
             height: "160px",
             objectFit: "fill",
-          }}></Image>
+          }}
+        />
       </div>
       <div className="py-8 px-6">
         <p className="font-bold text-2xl mb-6">{countryProps.countryName}</p>
