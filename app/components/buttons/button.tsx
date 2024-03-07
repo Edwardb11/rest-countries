@@ -22,11 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   return (
     <button
       onClick={handleClick}
-      className={`flex justify-center items-center py-2 px-4 last:mb-10 h-8 text-sm mobile:text-base mobile:h-12 min-w-32 font-normal shadow-full rounded ${
-        backButton
-          ? "bg-white_DarkModeText_LightModeElements dark:bg-darkBlue_DarkModeElements dark:text-white_DarkModeText_LightModeElements"
-          : ""
-      }`}>
+      className="flex justify-center items-center py-2 px-4 last:mb-10 h-8 text-sm mobile:text-base mobile:h-12 min-w-32 font-normal shadow-full rounded dark:bg-darkBlue_DarkModeElements dark:text-white_DarkModeText_LightModeElements">
       {backButton ? <BiArrowBack /> : name}
     </button>
   );
