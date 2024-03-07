@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import ThemeSwitcher from "../theme/theme_switcher";
+import ThemeSwitcher from "../theme/theme-switcher";
 
 const Header = () => {
   const router = useRouter();
