@@ -1,27 +1,72 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import Card from "./components/cards/cards";
-import { countryData } from "./interfaces/country";
-import { getCountries } from "./actions/data";
 import Link from "next/link";
+import { getCountries } from "./actions/data";
+import Card from "./components/cards/cards";
 import SearchForm from "./components/search/search-form";
 import RegionSelector from "./components/selector/region-selector";
 
-export default function Home() {
-  const [countries, setCountries] = useState<countryData[]>([]);
+interface countryData {
+  cca2: string;
+  flags: {
+    svg: string;
+  };
+  name: {
+    common: string;
+  };
+  population: number;
+  region: string;
+  capital: string;
+}
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data: countryData[] = await getCountries();
-        setCountries(data);
-      } catch (error) {
-        console.error("Error fetching countries:", error);
-      }
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { country?: string; region?: string };
+}) {
+  const countries: countryData[] = await getCountries();
+  let filteredCountries: countryData[];
+  if (!!searchParams?.region && !!searchParams?.country) {
+    const term = searchParams?.country;
+    const searchTerm = term ? term[0].toUpperCase() + term.slice(1) : "";
+    filteredCountries = countries.filter(
+      (country) =>
+        country.name.common.includes(searchTerm) &&
+        country.region == searchParams.region
+    );
+  } else if (!!searchParams?.region) {
+    filteredCountries = countries.filter(
+      (country) => country.region == searchParams.region
+    );
+  } else if (!!searchParams?.country) {
+    const term = searchParams?.country;
+    const searchTerm = term ? term[0].toUpperCase() + term.slice(1) : "";
+    filteredCountries = countries.filter((country) =>
+      country.name.common.includes(searchTerm)
+    );
+  } else {
+    filteredCountries = countries;
+  }
+
+  filteredCountries.sort((a, b) => {
+    if (a.name.common < b.name.common) {
+      return -1;
+    } else {
+      return 1;
     }
+  });
 
-    fetchData();
-  }, []);
+  const cards = filteredCountries.map((country: countryData) => {
+    return (
+      <Link key={country.name.common} href={`/detail/${country.cca2}`}>
+        <Card
+          flagSrc={country.flags.svg}
+          countryName={country.name.common}
+          population={country.population}
+          region={country.region}
+          capital={country.capital}
+        />
+      </Link>
+    );
+  });
 
   return (
     <main className="bg-veryLightGray_LightModeBG dark:bg-veryDarkBlue_DarkModeBG ">
@@ -32,18 +77,7 @@ export default function Home() {
         </div>
       </section>
       <section className="grid grid-cols-1 mobile:grid-cols-2 desktop:grid-cols-4 mobile:gap-10 gap-20 py-4 px-2 mobile:px-20">
-        {countries.map((country, index) => (
-          <Link key={country.name.common} href={`/details/${country.cca2}`}>
-            <Card
-              key={index}
-              flagSrc={country.flags.svg}
-              countryName={country.name.common}
-              population={country.population}
-              region={country.region}
-              capital={country.capital}
-            />
-          </Link>
-        ))}
+        {cards}
       </section>
     </main>
   );
