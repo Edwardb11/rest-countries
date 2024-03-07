@@ -3,19 +3,7 @@ import { getCountries } from "./actions/data";
 import Card from "./components/cards/cards";
 import SearchForm from "./components/search/search-form";
 import RegionSelector from "./components/selector/region-selector";
-
-interface countryData {
-  cca2: string;
-  flags: {
-    svg: string;
-  };
-  name: {
-    common: string;
-  };
-  population: number;
-  region: string;
-  capital: string;
-}
+import { countryData } from "./interfaces/country";
 
 export default async function Home({
   searchParams,
@@ -56,7 +44,7 @@ export default async function Home({
 
   const cards = filteredCountries.map((country: countryData) => {
     return (
-      <Link key={country.name.common} href={`/detail/${country.cca2}`}>
+      <Link key={country.name.common} href={`/details/${country.cca2}`}>
         <Card
           flagSrc={country.flags.svg}
           countryName={country.name.common}
